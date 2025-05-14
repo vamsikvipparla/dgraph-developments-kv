@@ -1,0 +1,23 @@
+# Dgraph schema for MBO Proof of Concept
+
+type Person {
+    edbkey: String! @id @search(hash) # Unique identifier for the person from EDB
+    contact_name: String @search(fulltext)
+    email: String @search(hash)
+    # Potentially other person attributes like phone, role, etc.
+    owns_business_at: [MID] @reverse(owned_by_person) # Edge to MIDs this person is associated with
+}
+
+type MID {
+    mid: String! @id @search(hash) # Unique identifier for the business location from CDB
+    business_name: String @search(term)
+    address_line1: String
+    city: String @search(hash)
+    state: String @search(hash)
+    zip_code: String @search(hash)
+    # Potentially other business attributes like business_type, status, etc.
+    owned_by_person: [Person] # Reverse edge from Person
+}
+
+# You can add other types later like Campaign, Response, Application
+# For MBO, Person and MID are the primary focus.

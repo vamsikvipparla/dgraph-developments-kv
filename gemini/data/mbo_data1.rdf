@@ -1,0 +1,81 @@
+# Mock Data for MBO Proof of Concept (RDF format)
+
+# --- Define Person Nodes ---
+_:person_alice <dgraph.type> "Person" .
+_:person_alice <edbkey> "EKEY01" .
+_:person_alice <contact_name> "Alice Wonderland" .
+_:person_alice <email> "alice.wonderland@example.com" .
+
+_:person_bob <dgraph.type> "Person" .
+_:person_bob <edbkey> "EKEY02" .
+_:person_bob <contact_name> "Bob The Builder" .
+_:person_bob <email> "bob.builder@example.com" .
+
+_:person_charlie <dgraph.type> "Person" .
+_:person_charlie <edbkey> "EKEY03" .
+_:person_charlie <contact_name> "Charlie Brown" .
+_:person_charlie <email> "charlie.brown@example.com" .
+
+_:person_diana <dgraph.type> "Person" .
+_:person_diana <edbkey> "EKEY04" .
+_:person_diana <contact_name> "Diana Prince" .
+_:person_diana <email> "diana.prince@example.com" . # Diana will own no businesses in this example
+
+# --- Define MID Nodes ---
+_:mid_bakery <dgraph.type> "MID" .
+_:mid_bakery <mid> "MID001" .
+_:mid_bakery <business_name> "Alice's Wonderland Bakery" .
+_:mid_bakery <address_line1> "123 Main St" .
+_:mid_bakery <city> "Springfield" .
+_:mid_bakery <state> "IL" .
+_:mid_bakery <zip_code> "62701" .
+
+_:mid_emporium <dgraph.type> "MID" .
+_:mid_emporium <mid> "MID002" .
+_:mid_emporium <business_name> "Alice's Emporium of Goods" .
+_:mid_emporium <address_line1> "456 Oak Ave" .
+_:mid_emporium <city> "Springfield" .
+_:mid_emporium <state> "IL" .
+_:mid_emporium <zip_code> "62702" .
+
+_:mid_hardware <dgraph.type> "MID" .
+_:mid_hardware <mid> "MID003" .
+_:mid_hardware <business_name> "Bob's Fix-It Hardware" .
+_:mid_hardware <address_line1> "789 Pine Ln" .
+_:mid_hardware <city> "Shelbyville" .
+_:mid_hardware <state> "IL" .
+_:mid_hardware <zip_code> "62565" .
+
+_:mid_tech <dgraph.type> "MID" .
+_:mid_tech <mid> "MID004" .
+_:mid_tech <business_name> "Charlie's Innovative Tech" .
+_:mid_tech <address_line1> "101 Data Dr" .
+_:mid_tech <city> "Springfield" .
+_:mid_tech <state> "IL" .
+_:mid_tech <zip_code> "62704" .
+
+_:mid_consulting <dgraph.type> "MID" .
+_:mid_consulting <mid> "MID005" .
+_:mid_consulting <business_name> "General Consulting Services" .
+_:mid_consulting <address_line1> "555 Broad St" .
+_:mid_consulting <city> "Metropolis" .
+_:mid_consulting <state> "NY" .
+_:mid_consulting <zip_code> "10001" .
+
+
+# --- Define Relationships (Edges) - This is where MBOs are created ---
+# Alice (EKEY01) owns MID001 (Bakery) and MID002 (Emporium) and MID005 (Consulting)
+_:person_alice <owns_business_at> _:mid_bakery .
+_:person_alice <owns_business_at> _:mid_emporium .
+_:person_alice <owns_business_at> _:mid_consulting . # Alice is an MBO (3 businesses)
+
+# Bob (EKEY02) owns MID003 (Hardware)
+_:person_bob <owns_business_at> _:mid_hardware .
+
+# Charlie (EKEY03) owns MID004 (Tech) and also MID005 (Consulting)
+_:person_charlie <owns_business_at> _:mid_tech .
+_:person_charlie <owns_business_at> _:mid_consulting . # Charlie is an MBO (2 businesses, shares one with Alice)
+
+# MID005 (Consulting) is owned by Alice and Charlie
+# This is implicitly defined by the <owns_business_at> edges above.
+# The reverse edges (<owned_by_person>) will be automatically created by Dgraph.

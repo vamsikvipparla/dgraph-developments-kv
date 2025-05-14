@@ -1,0 +1,29 @@
+_:o1 <dgraph.type> "OWNER" .
+_:o1 <owner_hash> "TID_9876" .
+_:o1 <owner_name> "Jane Patel" .
+_:o1 <has_contact> _:ct1 .
+
+_:ct1 <dgraph.type> "CONTACT" .
+_:ct1 <contact_hash> "PHONE_3175551212" .
+_:ct1 <phone> "317-555-1212" .
+
+_:m1 <dgraph.type> "MID" .
+_:m1 <mid_id> "MID123" .
+_:m1 <business_name> "Blue Café" .
+_:m1 <city> "Indianapolis" .
+_:m1 <state> "IN" .
+_:m1 <owned_by> _:o1 .
+
+_:c1 <dgraph.type> "CAMPAIGN" .
+_:c1 <campaign_id> "CMP001" .
+_:c1 <channel> "DM" .
+
+_:d1 <dgraph.type> "DELIVERY" .
+_:d1 <send_ts> "2025-05-10T15:00:00Z" .
+_:d1 <targeted_mid> _:m1 .
+_:d1 <for_campaign> _:c1 .
+
+_:r1 <dgraph.type> "RESPONSE" .
+_:r1 <status> "APPLIED" .
+_:r1 <response_ts> "2025-05-12T09:30:00Z" .
+_:r1 <produced> _:d1 .
