@@ -1,0 +1,54 @@
+[
+    {
+      "uid": "_:m1",
+      "dgraph.type": ["MID"],
+      "mid_id": "MID123",
+      "business_name": "Blue Café",
+      "city": "Indianapolis",
+      "state": "IN"
+    },
+  
+    {
+      "uid": "_:o1",
+      "dgraph.type": ["OWNER"],
+      "owner_hash": "TID_9876",
+      "owner_name": "Jane Patel",
+      "has_contact": [{ "uid": "_:ct1" }]
+    },
+  
+    {
+      "uid": "_:ct1",
+      "dgraph.type": ["CONTACT"],
+      "contact_hash": "PHONE_3175551212",
+      "phone": "317‑555‑1212"
+    },
+  
+    {          
+      "uid": "_:m1",
+      "owned_by": { "uid": "_:o1" }
+    },
+  
+    {
+      "uid": "_:c1",
+      "dgraph.type": ["CAMPAIGN"],
+      "campaign_id": "CMP001",
+      "channel": "DM"
+    },
+  
+    {
+      "uid": "_:d1",
+      "dgraph.type": ["DELIVERY"],
+      "send_ts": "2025-05-10T15:00:00Z",
+      "targeted_mid": { "uid": "_:m1" },
+      "for_campaign": { "uid": "_:c1" }
+    },
+  
+    {
+      "uid": "_:r1",
+      "dgraph.type": ["RESPONSE"],
+      "status": "APPLIED",
+      "response_ts": "2025-05-12T09:30:00Z",
+      "produced": { "uid": "_:d1" }
+    }
+  ]
+  

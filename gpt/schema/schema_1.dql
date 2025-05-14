@@ -1,0 +1,97 @@
+############################################
+# ‑‑‑ Predicate (edge / attribute) rules ‑‑‑
+############################################
+
+mid_id:          string  @index(exact)   @upsert .
+business_name:   string  @index(term)    .
+industry:        string  .
+addr_line1:      string  .
+city:            string  @index(term)    .
+state:           string  @index(exact)   .
+zip:             string  @index(exact)   .
+lat:             float   .
+lon:             float   .
+
+owner_hash:      string  @index(exact)   @upsert .
+owner_name:      string  @index(trigram) .
+
+contact_hash:    string  @index(exact)   @upsert .
+phone:           string  @index(exact)   .
+email:           string  @index(exact)   .
+
+campaign_id:     string  @index(exact)   @upsert .
+channel:         string  @index(exact)   .
+start_ts:        datetime .
+end_ts:          datetime .
+
+send_ts:         datetime .
+response_ts:     datetime .
+status:          string  @index(exact)   .
+
+application_id:  string  @index(exact)   @upsert .
+amount:          float   .
+approved_ts:     datetime .
+
+# --- UID edges (all reversible so you can query either direction) ---
+owned_by:        uid     @reverse .  # MID  → OWNER
+has_contact:     uid     @reverse .  # OWNER → CONTACT
+targeted_mid:    uid     @reverse .  # DELIVERY → MID
+for_campaign:    uid     @reverse .  # DELIVERY → CAMPAIGN
+produced:        uid     @reverse .  # RESPONSE → DELIVERY
+resulted_in:     uid     @reverse .  # RESPONSE → APPLICATION
+
+############################################
+# ‑‑‑ Type definitions (GraphQL± style) ‑‑‑
+############################################
+
+type MID {
+  mid_id
+  business_name
+  industry
+  addr_line1
+  city
+  state
+  zip
+  lat
+  lon
+  owned_by
+}
+
+type OWNER {
+  owner_hash
+  owner_name
+  has_contact
+}
+
+type CONTACT {
+  contact_hash
+  phone
+  email
+}
+
+type CAMPAIGN {
+  campaign_id
+  channel
+  start_ts
+  end_ts
+}
+
+type DELIVERY {
+  send_ts
+  targeted_mid
+  for_campaign
+  produced       # reverse edge lives on RESPONSE
+}
+
+type RESPONSE {
+  status
+  response_ts
+  produced
+  resulted_in
+}
+
+type APPLICATION {
+  application_id
+  amount
+  approved_ts
+}
